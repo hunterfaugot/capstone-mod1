@@ -1,8 +1,25 @@
+/* this is css code*/
 html {
   height: 100%;
   width: 100%;
 }
 
-body {
-  color: white;
+#chip-counter,
+#PU-counter,
+#AM-counter {
+  display: none;
+}
+#processing-unit-button,
+#assembly-module-button {
+    display: none;
+
+
+/* #chip-counter{
+    display: none;
+} */
+
+#processing-unit-button.disabled,
+#assembly-module-button.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
