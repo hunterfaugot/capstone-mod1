@@ -4,22 +4,23 @@ const assembleButton = document.getElementById('assemble-btn');
 const chipCounterSpan = document.getElementById('chip-counter');
 const PUCounterSpan = document.getElementById('PU-counter');
 const AMCounterSpan = document.getElementById('AM-counter');
+const ass1CounterSpan = document.getElementById('A1-counter');
 
 // Get references to the robot part buttons
 const processingUnitButton = document.getElementById('processing-unit-button');
 const assemblyModuleButton = document.getElementById('assembly-module-button');
+const assembler1Button = document.getElementById('Mk1-assembler-button');
 
 // Variable to store the chip count
 let chipCount = 0;
 // Other variable counters
 let PUCount = 0;
 let AMCount = 0;
-// Variable for the first press
+let ass1Count = 0;
+// Variable for revealing buttons
 let firstPress = false;
-// Variable to first display PU
-let PUbtnDisplay = false;
-// Variable to first display AM
-let AMbtnDisplay = false;
+let partsReveal1 = false;
+let robotsReveal1 = false;
 
 // Function to update the chip counter display
 function updateChipCounter() {
@@ -34,14 +35,15 @@ function updateAMCounter() {
   AMCounterSpan.textContent = `AMs: ${AMCount}`;
 }
 
+function updateAss1Counter() {
+  ass1CounterSpan.textContent = `Mk1As: ${ass1Count}`;
+}
+
 // Function to enable/disable robot part buttons based on chip count
 function updateRobotPartButtons() {
   console.log("Current Chip Count:", chipCount);
   processingUnitButton.disabled = chipCount < 20;
-  assemblyModuleButton.disabled = chipCount < 30;
-
-  console.log("Processing Unit Button Disabled:", processingUnitButton.disabled);
-  console.log("Assembly Module Button Disabled:", assemblyModuleButton.disabled);
+  assemblyModuleButton.disabled = chipCount < 50;
 
   if (processingUnitButton.disabled) {
     processingUnitButton.classList.add('disabled');
@@ -60,6 +62,17 @@ function updateRobotPartButtons() {
   }
 }
 
+function updateRobotButtons() {
+  if (PUCount < 1 || AMCount < 1) {
+    assembler1Button.classList.add('disabled');
+    console.log("A1 true");
+  } else {
+    assembler1Button.classList.remove('disabled');
+    console.log("A1 false");
+  }
+
+}
+
 // Add event listener to the assemble button
 assembleButton.addEventListener('click', () => {
   // Increase chip count by 1
@@ -75,23 +88,17 @@ assembleButton.addEventListener('click', () => {
     }
   }
 
-  // Reveal the PU button after reaching 20 first time
+  // Reveal first parts buttons after reaching 20
   if (chipCount === 20) {
-    if (PUbtnDisplay === false) {
-      PUbtnDisplay = true;
+    if (partsReveal1 === false) {
+      partsReveal1 = true;
       processingUnitButton.style.display = 'block';
       PUCounterSpan.style.display = 'block';
-    }
-  }
-
-  // Reveal the AM button after reaching 30 first time
-  if (chipCount === 30) {
-    if (AMbtnDisplay === false) {
-      AMbtnDisplay = true;
       assemblyModuleButton.style.display = 'block';
       AMCounterSpan.style.display = 'block';
     }
   }
+
   
   // Update robot part button visibility and functionality
   updateRobotPartButtons();
@@ -106,19 +113,78 @@ processingUnitButton.addEventListener('click', () => {
   updateChipCounter();
   updatePUCounter();
   updateRobotPartButtons();
+  
+
+  // Reveal the AM button after reaching 30
+  if (PUCount === 1) {
+    if (robotsReveal1 === false) {
+      robotsReveal1 = true;
+      assembler1Button.style.display = 'block';
+      ass1CounterSpan.style.display = 'block';
+    }
+  }
+  updateRobotButtons();
 });
 
-// Processing Unit Build Button
+// Assembly Module Build Button
 assemblyModuleButton.addEventListener('click', () => {
 
-  chipCount -= 30;
+  chipCount -= 50;
   AMCount++;
   // Update the chip counter display
   updateChipCounter();
   updateAMCounter();
   updateRobotPartButtons();
+  
+
+  // Reveal the AM button after reaching 30
+  if (AMCount === 1) {
+    if (robotsReveal1 === false) {
+      robotsReveal1 = true;
+      assembler1Button.style.display = 'block';
+      ass1CounterSpan.style.display = 'block';
+    }
+  }
+  updateRobotButtons();
+});
+
+
+// Variable to store the interval ID (used for stopping)
+let intervalId = null;
+
+// Function to increase chip count every second
+function increaseChipCount() {
+  chipCount += ass1Count; // Multiply by number of active assemblers
+  updateChipCounter();
+  updatePUCounter();
+  updateAMCounter();
+  updateRobotPartButtons();
+  updateRobotButtons();
+}
+
+// Mk1 Assembler Build Button
+assembler1Button.addEventListener('click', () => {
+
+  PUCount -= 1;
+  AMCount -= 1;
+  ass1Count++;
+
+  // Start or continue the chip increment interval
+  if (!intervalId) {
+    intervalId = setInterval(increaseChipCount, 1000);
+  }
+  // Update the chip counter display
+  updateChipCounter();
+  updatePUCounter();
+  updateAMCounter();
+  updateAss1Counter();
+  updateRobotPartButtons();
+  updateRobotButtons();
 });
 
 // Call updateChipCounter to initially display chip count (0)
 updateChipCounter();
+
+
+
 
