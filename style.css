@@ -3,6 +3,9 @@ html {
   height: 100%;
   width: 100%;
 }
+.multi-line-button {
+  white-space: pre-wrap;
+}
 
 #chip-counter,
 #PU-counter,

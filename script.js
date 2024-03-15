@@ -21,6 +21,9 @@ let ass1Count = 0;
 let firstPress = false;
 let partsReveal1 = false;
 let robotsReveal1 = false;
+// Variables for changing costs
+let processingUnitBoughtCount = 0;
+
 
 // Function to update the chip counter display
 function updateChipCounter() {
@@ -39,12 +42,21 @@ function updateAss1Counter() {
   ass1CounterSpan.textContent = `Mk1As: ${ass1Count}`;
 }
 
+function updatePUCost(cost) {
+  processingUnitButton.textContent = `Processing Unit\nCost: ${cost} Chips`;
+}
+
+
 // Function to enable/disable robot part buttons based on chip count
 function updateRobotPartButtons() {
   console.log("Current Chip Count:", chipCount);
-  processingUnitButton.disabled = chipCount < 20;
+  //processingUnitButton.disabled = chipCount < 20;
   assemblyModuleButton.disabled = chipCount < 50;
 
+  const processingUnitCost = getProcessingUnitCost(processingUnitBoughtCount);
+
+  processingUnitButton.disabled = chipCount < processingUnitCost;
+  
   if (processingUnitButton.disabled) {
     processingUnitButton.classList.add('disabled');
     console.log("PU true");
@@ -104,18 +116,38 @@ assembleButton.addEventListener('click', () => {
   updateRobotPartButtons();
 });
 
+// Base cost for Processing Unit
+let processingUnitCost = 20;
+//let processingUnitCost = 20;
+
+// Function to calculate processing unit cost for next round
+function getProcessingUnitCost(PUBoughtCount) {
+  console.log(Math.log(PUBoughtCount))
+  PUBoughtCount = PUBoughtCount + 0.5;
+  let result = processingUnitCost * (Math.log(PUBoughtCount) + 1);
+  console.log(result);
+  return result;
+}
+console.log(Math.log(2))
+getProcessingUnitCost(1);
 // Processing Unit Build Button
 processingUnitButton.addEventListener('click', () => {
-  
-  chipCount -= 20;
   PUCount++;
+  processingUnitBoughtCount++;
+  console.log(processingUnitBoughtCount, "processingUnitBoughtCount");
+  console.log(processingUnitCost, "old processingUnitCost");
+  let newCost = getProcessingUnitCost(processingUnitBoughtCount);
+  console.log(newCost, "newCost");
+  chipCount -= processingUnitCost;
+  //console.log(processingUnitCost, "new processingUnitCost");
   // Update the chip counter display
   updateChipCounter();
   updatePUCounter();
   updateRobotPartButtons();
   
-
-  // Reveal the AM button after reaching 30
+  updatePUCost(newCost); // Pass the cost as an argument
+  
+  // Reveal the AS1 button
   if (PUCount === 1) {
     if (robotsReveal1 === false) {
       robotsReveal1 = true;
@@ -137,7 +169,7 @@ assemblyModuleButton.addEventListener('click', () => {
   updateRobotPartButtons();
   
 
-  // Reveal the AM button after reaching 30
+  // Reveal the AS1 button
   if (AMCount === 1) {
     if (robotsReveal1 === false) {
       robotsReveal1 = true;
@@ -152,7 +184,7 @@ assemblyModuleButton.addEventListener('click', () => {
 // Variable to store the interval ID (used for stopping)
 let intervalId = null;
 
-// Function to increase chip count every second
+// Function to auto increase chip count
 function increaseChipCount() {
   chipCount += ass1Count; // Multiply by number of active assemblers
   updateChipCounter();
@@ -164,14 +196,14 @@ function increaseChipCount() {
 
 // Mk1 Assembler Build Button
 assembler1Button.addEventListener('click', () => {
-
+  if (PUCount >= 1 && AMCount >= 1) {
   PUCount -= 1;
   AMCount -= 1;
   ass1Count++;
-
+  }
   // Start or continue the chip increment interval
   if (!intervalId) {
-    intervalId = setInterval(increaseChipCount, 1000);
+    intervalId = setInterval(increaseChipCount, 20000);
   }
   // Update the chip counter display
   updateChipCounter();
