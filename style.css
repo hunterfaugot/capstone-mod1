@@ -9,23 +9,20 @@ html {
 
 #chip-counter,
 #PU-counter,
-#AM-counter,
-#A1-counter{
+#AM-counter {
   display: none;
 }
 #processing-unit-button,
-#assembly-module-button,
-#Mk1-assembler-button{
+#assembly-module-button {
     display: none;
-}
+
 
 /* #chip-counter{
     display: none;
 } */
 
 #processing-unit-button.disabled,
-#assembly-module-button.disabled,
-#Mk1-assembler-button.disabled {
+#assembly-module-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
