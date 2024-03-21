@@ -173,7 +173,7 @@ assembler1Button.addEventListener('click', () => {
   }
   // Start or continue the chip increment interval
   if (!intervalId) {
-    intervalId = setInterval(increaseChipCount, 20000);
+    intervalId = setInterval(increaseChipCount, 10000);
   }
   // Update the chip counter display
   updateChipCounter();
