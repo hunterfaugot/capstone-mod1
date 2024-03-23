@@ -11,6 +11,11 @@ const processingUnitButton = document.getElementById('processing-unit-button');
 const assemblyModuleButton = document.getElementById('assembly-module-button');
 const assembler1Button = document.getElementById('Mk1-assembler-button');
 
+//icons
+const chipIconSpan = document.getElementById('chip-icon');
+const partsIconSpan = document.getElementById('parts-icon');
+const robotIconSpan = document.getElementById('robot-icon');
+
 // Variable to store the chip count
 let chipCount = 0;
 // Other variable counters
@@ -84,6 +89,7 @@ assembleButton.addEventListener('click', () => {
   if (chipCount === 1) {
     if (firstPress === false) {
       firstPress = true;
+      chipIconSpan.style.display = 'block';
       chipCounterSpan.style.display = 'block';
     }
   }
@@ -92,6 +98,7 @@ assembleButton.addEventListener('click', () => {
   if (chipCount === 20) {
     if (partsReveal1 === false) {
       partsReveal1 = true;
+      partsIconSpan.style.display = 'block';
       processingUnitButton.style.display = 'block';
       PUCounterSpan.style.display = 'block';
       assemblyModuleButton.style.display = 'block';
@@ -119,6 +126,7 @@ processingUnitButton.addEventListener('click', () => {
   if (PUCount === 1) {
     if (robotsReveal1 === false) {
       robotsReveal1 = true;
+      robotIconSpan.style.display = 'block';
       assembler1Button.style.display = 'block';
       ass1CounterSpan.style.display = 'block';
     }
@@ -141,6 +149,7 @@ assemblyModuleButton.addEventListener('click', () => {
   if (AMCount === 1) {
     if (robotsReveal1 === false) {
       robotsReveal1 = true;
+      robotIconSpan.style.display = 'block';
       assembler1Button.style.display = 'block';
       ass1CounterSpan.style.display = 'block';
     }

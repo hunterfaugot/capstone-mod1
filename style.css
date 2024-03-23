@@ -3,26 +3,37 @@ html {
   height: 100%;
   width: 100%;
 }
+
 .multi-line-button {
   white-space: pre-wrap;
 }
 
+.parts-btn {
+  background-color: #6f42c1 !important;
+}
+
+.robot-btn {
+  background-color: #fd7e14 !important;
+}
+
+/*hide things until active*/
+#chip-icon,
+#parts-icon,
+#robot-icon,
+
 #chip-counter,
 #PU-counter,
-#AM-counter {
-  display: none;
-}
+#AM-counter,
+#A1-counter,
+
 #processing-unit-button,
-#assembly-module-button {
+#assembly-module-button,
+#Mk1-assembler-button {
     display: none;
-
-
-/* #chip-counter{
-    display: none;
-} */
 
 #processing-unit-button.disabled,
-#assembly-module-button.disabled {
+#assembly-module-button.disabled,
+#Mk1-assembler-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
